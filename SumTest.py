@@ -2,10 +2,11 @@ import uiautomator2 as u2
 import time
 
 
-class Robot:
+class Bot:
     def __init__(self):
         self.d = u2.connect()
         print("📲 Connected to device")
+        
         self.d.shell("settings put system accelerometer_rotation 0")
         self.d.shell("settings put secure system locales th_TH")
         self.d.shell("settings put system screen_brightness_mode 0")  # ตั้งค่าแนวตรง
@@ -19,7 +20,7 @@ class Robot:
             if time.time() - start_time > timeout:
                 print(f"⏳ หมดเวลา: ไม่พบ '{text}'")
                 return False
-            time.sleep(1)
+            time.sleep(2)
         print(f"✅ พบข้อความ: {text}")
         return True
 
@@ -54,6 +55,7 @@ class Robot:
 
     def enable_unknown_sources(self):
         self.open_settings_and_search("ติดตั้งแอปที่ไม่รู้จัก")
+        time.sleep(3)
         if self.wait_for_text("การเข้าถึงพิเศษ"):
             self.click("การเข้าถึงพิเศษ")
             if self.wait_for_text("ติดตั้งแอปที่ไม่รู้จัก"):
@@ -61,7 +63,9 @@ class Robot:
                 if self.wait_for_text("SOTI MobiControl"):
                     self.click("SOTI MobiControl")
 
-    def add_language(self):
+   
+    
+    def add_language(self):                           
         self.open_settings_and_search("ภาษา")
         if self.wait_for_text("การจัดการทั่วไป"):
             self.click("การจัดการทั่วไป")
@@ -110,11 +114,12 @@ class Robot:
         self.d.shell("locksettings set-pin 123456")  # ล็อค
         self.d.shell("am start -a android.settings.WIFI_SETTINGS")  # หน้า wifi
         self.d.shell("settings put system accelerometer_rotation 1")
+        self.d.shell("pm uninstall com.github.uiautomator") # ลบแอป
+
 
 
 if __name__ == "__main__":
-
-    automation = Robot()
+    automation = Bot()
     automation.configure_side_button()
     automation.enable_unknown_sources()
     automation.add_language()
