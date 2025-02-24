@@ -8,11 +8,11 @@ class Bot:
         print("📲 Connected to device")
         
         self.d.shell("settings put system accelerometer_rotation 0")
-        self.d.shell("settings put secure system locales th_TH")
+        self.d.shell("settings put secure system locales  th_TH")
         self.d.shell("settings put system screen_brightness_mode 0")  # ตั้งค่าแนวตรง
         self.d.shell("settings put system screen_brightness 255")  # ความสว่าง
         self.d.shell("settings put system screen_off_timeout 1800000")  # เวลาพักหน้าจอ
-
+        
     def wait_for_text(self, text, timeout=5):
         """รอให้ข้อความปรากฏบนหน้าจอ"""
         start_time = time.time()
@@ -55,11 +55,11 @@ class Bot:
 
     def enable_unknown_sources(self):
         self.open_settings_and_search("ติดตั้งแอปที่ไม่รู้จัก")
-        time.sleep(3)
         if self.wait_for_text("การเข้าถึงพิเศษ"):
             self.click("การเข้าถึงพิเศษ")
-            if self.wait_for_text("ติดตั้งแอปที่ไม่รู้จัก"):
+            if self.wait_for_text("ติดตั้งแอปที่ไม่รู้จัก"): 
                 self.click("ติดตั้งแอปที่ไม่รู้จัก")
+                time.sleep(5)   
                 if self.wait_for_text("SOTI MobiControl"):
                     self.click("SOTI MobiControl")
 
@@ -115,6 +115,7 @@ class Bot:
         self.d.shell("am start -a android.settings.WIFI_SETTINGS")  # หน้า wifi
         self.d.shell("settings put system accelerometer_rotation 1")
         self.d.shell("pm uninstall com.github.uiautomator") # ลบแอป
+        print(f"✅ จบการทำงาน")
 
 
 
